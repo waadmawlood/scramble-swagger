@@ -32,6 +32,7 @@ php artisan vendor:publish --provider "Waad\ScrambleSwagger\ScrambleSwaggerServi
 - Support multiple versions of your API.
 - Use Swagger UI v5.18.3
 - Use OAS 3.1.0
+- Custom Style css `scramble-swagger/css/custom-style.css`
 
 ## License
 
