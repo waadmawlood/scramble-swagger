@@ -9,6 +9,7 @@
         .swagger-ui .info { margin: 15px 0; }
         .swagger-ui .scheme-container { padding: 5px 0 15px; }
     </style>
+    <link rel="stylesheet" href="{{ asset('scramble-swagger/css/custom-style.css') }}">
 </head>
 
 <body>
