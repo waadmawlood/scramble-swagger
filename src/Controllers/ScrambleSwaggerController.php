@@ -3,6 +3,7 @@
 namespace Waad\ScrambleSwagger\Controllers;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Waad\ScrambleSwagger\Commands\GenerateScrambleSwagger;
 
 class ScrambleSwaggerController
@@ -29,14 +30,12 @@ class ScrambleSwaggerController
             throw new \Exception('Failed to generate Swagger documentation');
         }
 
-        $filePath = public_path('scramble-swagger/doc.json');
-        if (! file_exists($filePath)) {
+        $jsonContent = Storage::disk('local')->get('doc.json');
+        if (empty($jsonContent)) {
             return [];
         }
 
-        $jsonContent = file_get_contents($filePath);
         $data = json_decode($jsonContent, true);
-
         if (empty($data)) {
             return [];
         }

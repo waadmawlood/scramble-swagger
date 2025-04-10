@@ -4,6 +4,7 @@ namespace Waad\ScrambleSwagger\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateScrambleSwagger extends Command
 {
@@ -13,21 +14,22 @@ class GenerateScrambleSwagger extends Command
 
     public function handle()
     {
-        $path = public_path('scramble-swagger/doc.json');
+        $fileName = 'doc.json';
+        $path = Storage::disk('local')->path($fileName);
         Artisan::call('scramble:export', ['--path' => $path]);
 
-        $this->copyPathsToComponents($path);
+        $this->copyPathsToComponents($fileName);
 
         return Command::SUCCESS;
     }
 
-    private function copyPathsToComponents($filePath)
+    private function copyPathsToComponents($fileName)
     {
-        $jsonContent = file_get_contents($filePath);
+        $jsonContent = Storage::disk('local')->get($fileName);
         $swaggerData = json_decode($jsonContent, true);
 
         if ($swaggerData === null) {
-            throw new \Exception("Error decoding JSON from file: $filePath");
+            throw new \Exception("Error decoding JSON from file: $fileName");
         }
 
         if (isset($swaggerData['paths'])) {
@@ -36,8 +38,8 @@ class GenerateScrambleSwagger extends Command
             throw new \Exception("No 'paths' key found in the JSON.");
         }
 
-        file_put_contents($filePath, json_encode($swaggerData));
+        Storage::disk('local')->put($fileName, json_encode($swaggerData));
 
-        return $filePath;
+        return $fileName;
     }
 }

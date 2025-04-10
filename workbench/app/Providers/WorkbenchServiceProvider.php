@@ -11,7 +11,7 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        app()->usePublicPath(__DIR__.'/../public');
+        //
     }
 
     /**
